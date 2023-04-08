@@ -9,6 +9,7 @@ import {
     NavItem
 } from "reactstrap";
 import NucampLogo from '../app/assets/img/logo.png';
+import UserLoginForm from "../features/user/UserLoginForm";
 
 
 const Header = () => {
@@ -46,6 +47,7 @@ const Header = () => {
                         </NavLink>
                     </NavItem>
                 </Nav>
+                <UserLoginForm />
             </Collapse>
         </Navbar>
     )
