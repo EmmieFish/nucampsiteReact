@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Modal, ModalBody, ModalHeader, FormGroup, Label } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { validateCommentForm } from "../../utils/validateCommentForm";
+import { addComment } from "./commentsSlice";
 
 
 const CommentForm = ({campsiteId}) => {
     const [modalOpen, setModalOpen] = useState(false);
+
+    const dispatch = useDispatch();
 
     const handleSubmit = (values) => {
         const comment = {
@@ -13,8 +17,10 @@ const CommentForm = ({campsiteId}) => {
             rating: values.rating,
             author: values.author,
             text: values.commentText,
+            date: new Date(Date.now()).toISOString()
         };
         console.log(comment);
+        dispatch(addComment(comment));
         setModalOpen(false);
     }
 
@@ -30,7 +36,7 @@ const CommentForm = ({campsiteId}) => {
                 <ModalBody>
                     <Formik
                         initialValues={{
-                            rating: "5", //what do you mean this is "manipulating the customer"
+                            rating: "5",
                             author: "",
                             commentText: "",
                         }}
@@ -45,14 +51,11 @@ const CommentForm = ({campsiteId}) => {
                                     as="select"
                                     className="form-control"
                                 >
-                                    {/* no longer using this option */}
-                                    {/* <option>Select...</option> */} 
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
                                     <option>4</option>
                                     <option selected>5</option> 
-                                    {/* this will be the default option and they will have to actively select otherwise */}
                                 </Field>
                                 <ErrorMessage name="rating">
                                     {(msg) => (
@@ -83,12 +86,7 @@ const CommentForm = ({campsiteId}) => {
                                     rows="12"
                                     className="form-control"
                                 />
-                                {/* <ErrorMessage name="commentText">
-                                    {(msg) => (
-                                        <p className="text-danger">{msg}</p>
-                                    )}
-                                </ErrorMessage> */}
-                                {/* letting the customer be mega lazy and not even require a comment */}
+
                             </FormGroup>
 
                             <Button type="submit" color="primary">
